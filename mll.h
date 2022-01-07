@@ -63,6 +63,7 @@ void addChildToParent(listParent &P, listGames G, string genre, string gameJudul
 void deleteGenre(listParent &P, string genre, adrParent &storeP);
 void deleteGame(listParent &P, listGames &G, string judulGame, adrGames &storeG);
 void deleteChild(listParent &P, adrGames storeG, adrChild &storeC);
+void deleteChildofParent(listParent &P, string judulGame);
 
 //PRINTING
 void printParent(listParent P);
@@ -78,6 +79,9 @@ void printGenreMax(listParent P, string genre);
 void addToCart(listCart &C, listGames G, string judulGame);
 void printCart(listCart C);
 int sumCart(listCart C);
+
+//fungsi tambahan
+float meanGenre(listParent P, string genre);
 
 //MENU
 void login(int userChoice, listParent &P, listGames &G, listCart &C);

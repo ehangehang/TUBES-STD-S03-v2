@@ -215,9 +215,7 @@ void deleteChild(listParent &P, adrGames storeG, adrChild &storeC) {
     adrParent helperGenre = P.firstParent;
 
     while (helperGenre != NULL) {
-        if (helperGenre->firstChild == NULL) {
-            helperGenre = helperGenre->nextParent;
-        } else {
+        if (helperGenre->firstChild != NULL) {
             adrChild helperChild = helperGenre->firstChild;
             while (helperChild != NULL) {
                 if (helperChild->infoChild->info.judul == storeG->info.judul) {
@@ -245,8 +243,10 @@ void deleteChild(listParent &P, adrGames storeG, adrChild &storeC) {
                 }
                 helperChild = helperChild->nextChild;
             }
+            helperGenre = helperGenre->nextParent;
+        } else {
+            helperGenre = helperGenre->nextParent;
         }
-        helperGenre = helperGenre->nextParent;
     }
 }
 
@@ -505,6 +505,27 @@ int sumCart(listCart C) {
     }
 }
 
+float meanGenre(listParent P, string genre) {
+    adrParent findGenre = searchGenre(P, genre);
+    float mean, sum, counter;
+
+    counter = 0.0;
+    sum = 0.0;
+    if (findGenre == NULL) {
+        cout << "Genre tidak ditemukan!" << endl;
+    } else {
+        adrChild helper = findGenre->firstChild;
+        while (helper != NULL) {
+            sum += helper->infoChild->info.harga;
+            counter++;
+            helper = helper->nextChild;
+        }
+        mean = sum/counter;
+    }
+
+    return mean;
+}
+
 void login(int userChoice, listParent &P, listGames &G, listCart &C) {
 
     cout << "Login sebagai?" << endl;
@@ -546,6 +567,7 @@ void menuChoices(int userChoice) {
         cout << "4. Masukkan game ke keranjang" << endl;
         cout << "5. Lihat keranjang" << endl;
         cout << "6. Menghitung harga keranjang" << endl;
+        cout << "7. Cari rata-rata harga suatu genre" << endl;
         cout << "99. Kembali ke menu login" << endl;
         cout << "0. Exit" << endl;
     }
@@ -710,6 +732,8 @@ void menuCustomer(int user, listParent &P, listGames &G, listCart &C) {
     //case 5 variables
     string gameToCart;
     char genreHL = 'X';
+    //case 7 variables
+    string avgG;
     cout << "Pilih menu: "; cin >> choice;
     while (choice != 0) {
         switch (choice) {
@@ -784,6 +808,17 @@ void menuCustomer(int user, listParent &P, listGames &G, listCart &C) {
         case 6: //Menghitung harga keranjang
             system("cls");
             cout << "Jumlah harga keranjang: " << sumCart(C) << endl;
+            cout << "Selesai! Tekan enter untuk kembali ke menu utama" << endl;
+            getch();
+
+            system("cls");
+            menuChoices(user);
+            cout << "Pilih menu: "; cin >> choice;
+            break;
+        case 7: //Menghitung rata-rata harga genre
+            system("cls");
+            cout << "Cari rata-rata genre: "; cin >> avgG;
+            cout << "Rata-rata harga dari genre " << avgG << " adalah " << meanGenre(P, avgG) << endl;
             cout << "Selesai! Tekan enter untuk kembali ke menu utama" << endl;
             getch();
 
